@@ -49,7 +49,15 @@ Folder and file names may carry tokens. `module-template/` is the stub for one `
 python3 -m unittest discover -s tests
 ```
 
-These tests build sample repositories and inspect them. They do not need Docker. To prove the gates, generate a repository and run the commands in its `.factory/recipe.yml`.
+These tests build sample repositories and inspect them, and test the import sorter. They do not need Docker.
+
+The gate run builds three repositories (namespaces that sort before and after Illuminate, Framework and Tests) and runs the whole recipe on each. It needs Docker and about three minutes:
+
+```
+LARAVEL_TEMPLATE_GATES=1 python3 -m unittest tests.test_gates -v
+```
+
+`new-repo.py` re-sorts the `use` block of every PHP file after filling tokens, matching Pint's `ordered_imports` (alpha, const then class then function), because a namespace token changes the sort order per product.
 
 ## Refresh `composer.lock`
 
