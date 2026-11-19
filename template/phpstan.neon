@@ -1,0 +1,23 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+    - vendor/nesbot/carbon/extension.neon
+    # Paths and migration folders come from modules.php (see phpstan.modules.php).
+    - phpstan.modules.php
+
+services:
+    -
+        class: Tools\PHPStan\BusDispatchReturnTypeExtension
+        tags:
+            - phpstan.broker.dynamicMethodReturnTypeExtension
+
+parameters:
+    tmpDir: .phpstan.cache
+
+    # Level 10 is the highest level.
+    level: max
+
+    # Tests are not analysed at level max: assertions over responses are dynamic
+    # by nature. Production code is typed properly.
+    excludePaths:
+        - */Tests/*
+        - tests/*

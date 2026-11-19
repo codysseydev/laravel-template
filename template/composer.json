@@ -1,0 +1,85 @@
+{
+    "$schema": "https://getcomposer.org/schema.json",
+    "name": "{{PRODUCT_SLUG}}/{{PRODUCT_SLUG}}",
+    "type": "project",
+    "description": "{{PRODUCT_PITCH}}",
+    "license": "proprietary",
+    "require": {
+        "php": "^8.5",
+        "laravel/framework": "^13.0",
+        "laravel/tinker": "^3.0"
+    },
+    "require-dev": {
+        "brianium/paratest": "^7.7",
+        "fakerphp/faker": "^1.23",
+        "larastan/larastan": "^3.0",
+        "laravel/pint": "^1.18",
+        "mockery/mockery": "^1.6",
+        "nunomaduro/collision": "^8.0",
+        "phparkitect/phparkitect": "^1.1",
+        "phpunit/phpunit": "^12.0",
+        "rector/rector": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Framework\\": "Framework/",
+            "{{PRODUCT_NAMESPACE}}\\": "{{PRODUCT_NAMESPACE}}/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/",
+            "Tools\\PHPStan\\": "tools/phpstan/"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover --ansi"
+        ],
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "post-create-project-cmd": [
+            "@php artisan key:generate --ansi"
+        ],
+        "pint": [
+            "pint --test"
+        ],
+        "arkitect": [
+            "phparkitect check"
+        ],
+        "phpstan": [
+            "phpstan analyse --memory-limit=2G"
+        ],
+        "rector": [
+            "rector process --dry-run --no-progress-bar"
+        ],
+        "test": [
+            "@putenv COMPOSER_PROCESS_TIMEOUT=0",
+            "@php artisan test --compact --parallel --recreate-databases"
+        ],
+        "gates": [
+            "@pint",
+            "@arkitect",
+            "@phpstan",
+            "@rector",
+            "@test"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "dont-discover": []
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
