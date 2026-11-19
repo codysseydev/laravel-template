@@ -32,6 +32,50 @@ def substitute(text, tokens):
     return text
 
 
+USE_LINE_RE = re.compile(r"^use (?:(function|const) )?([A-Za-z0-9_\\]+(?: as [A-Za-z0-9_]+)?);$")
+IMPORT_TYPE_ORDER = {"const": 0, None: 1, "function": 2}
+
+
+def sort_imports(text):
+    """Re-sort each top-level `use` block the way Pint's ordered_imports does.
+
+    Matches the laravel preset used by pint.json: sort_algorithm alpha, imports_order
+    const, class, function. Names compare case-insensitively with backslashes treated as
+    spaces. A block is a run of top-level single-import `use` lines; blank lines inside
+    the run keep their positions, only the statements move. Checked against
+    friendsofphp/php-cs-fixer OrderedImportsFixer as bundled in laravel/pint 1.32.3."""
+    lines = text.split("\n")
+    out = list(lines)
+    i = 0
+    while i < len(lines):
+        if not USE_LINE_RE.match(lines[i]):
+            i += 1
+            continue
+        slots = []
+        j = i
+        while j < len(lines) and (USE_LINE_RE.match(lines[j]) or (lines[j] == "" and _use_follows(lines, j))):
+            if USE_LINE_RE.match(lines[j]):
+                slots.append(j)
+            j += 1
+        statements = [lines[k] for k in slots]
+        statements.sort(key=_import_sort_key)
+        for slot, statement in zip(slots, statements):
+            out[slot] = statement
+        i = j
+    return "\n".join(out)
+
+
+def _use_follows(lines, index):
+    while index < len(lines) and lines[index] == "":
+        index += 1
+    return index < len(lines) and USE_LINE_RE.match(lines[index]) is not None
+
+
+def _import_sort_key(line):
+    kind, name = USE_LINE_RE.match(line).groups()
+    return IMPORT_TYPE_ORDER[kind], name.replace("\\", " ").lower()
+
+
 def substitute_file_text(name, text, tokens):
     """JSON files get JSON-escaped values, so a quote in the pitch cannot break them."""
     if not name.endswith(".json"):
@@ -55,8 +99,11 @@ def copy_tree(source, target, tokens):
             except UnicodeDecodeError:
                 shutil.copy2(src, dest)
                 continue
+            result = substitute_file_text(name, text, tokens)
+            if name.endswith(".php"):
+                result = sort_imports(result)
             with open(dest, "w", encoding="utf-8") as f:
-                f.write(substitute_file_text(name, text, tokens))
+                f.write(result)
             shutil.copymode(src, dest)
 
 

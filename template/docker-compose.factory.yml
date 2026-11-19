@@ -12,6 +12,8 @@ services:
     volumes:
       - .:/var/www/html
     environment:
+      # Hides the image banner, which calls whoami and warns for the host user id.
+      SHOW_WELCOME_MESSAGE: "false"
       HOME: /tmp
       COMPOSER_HOME: /tmp/composer
       DB_CONNECTION: mysql
