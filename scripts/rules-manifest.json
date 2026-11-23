@@ -1,0 +1,115 @@
+{
+  "rules": [
+    {
+      "file": "architecture.md",
+      "source": "kanon/laravel-kanon/references/architecture.md",
+      "paths": [
+        "{{PRODUCT_NAMESPACE}}/**",
+        "Framework/**"
+      ]
+    },
+    {
+      "file": "authorization.md",
+      "source": "kanon/laravel-kanon/references/authorization.md",
+      "paths": [
+        "{{PRODUCT_NAMESPACE}}/**"
+      ]
+    },
+    {
+      "file": "filament.md",
+      "source": "kanon/laravel-kanon/references/filament.md",
+      "paths": [
+        "AdminPanel/**"
+      ]
+    },
+    {
+      "file": "http-api.md",
+      "source": "kanon/laravel-kanon/references/http-api.md",
+      "paths": [
+        "routes/**",
+        "{{PRODUCT_NAMESPACE}}/**/*-routes.php",
+        "{{PRODUCT_NAMESPACE}}/**/*Controller.php",
+        "{{PRODUCT_NAMESPACE}}/**/*Request.php",
+        "{{PRODUCT_NAMESPACE}}/**/*Resource.php"
+      ]
+    },
+    {
+      "file": "integrations.md",
+      "source": "kanon/laravel-kanon/references/integrations.md",
+      "paths": [
+        "{{PRODUCT_NAMESPACE}}/**",
+        "Framework/**"
+      ]
+    },
+    {
+      "file": "isolation.md",
+      "source": "kanon/laravel-kanon/references/isolation.md",
+      "paths": [
+        "{{PRODUCT_NAMESPACE}}/**",
+        "Framework/**",
+        "tests/Architecture/**"
+      ]
+    },
+    {
+      "file": "models-domain.md",
+      "source": "kanon/laravel-kanon/references/models-domain.md",
+      "paths": [
+        "{{PRODUCT_NAMESPACE}}/**",
+        "Framework/**"
+      ]
+    },
+    {
+      "file": "orchestration-di.md",
+      "source": "kanon/laravel-kanon/references/orchestration-di.md",
+      "paths": [
+        "{{PRODUCT_NAMESPACE}}/**",
+        "Framework/**"
+      ]
+    },
+    {
+      "file": "performance.md",
+      "source": "kanon/laravel-kanon/references/performance.md",
+      "paths": [
+        "{{PRODUCT_NAMESPACE}}/**",
+        "Framework/**"
+      ]
+    },
+    {
+      "file": "persistence.md",
+      "source": "kanon/laravel-kanon/references/persistence.md",
+      "paths": [
+        "database/**",
+        "config/**",
+        "bootstrap/providers.php",
+        "{{PRODUCT_NAMESPACE}}/**/*ServiceProvider.php",
+        "{{PRODUCT_NAMESPACE}}/**/Migrations/**",
+        "{{PRODUCT_NAMESPACE}}/**/*Factory.php"
+      ]
+    },
+    {
+      "file": "php-core.md",
+      "source": "kanon/laravel-kanon/references/php-core.md",
+      "paths": [
+        "{{PRODUCT_NAMESPACE}}/**",
+        "Framework/**",
+        "tools/**"
+      ]
+    },
+    {
+      "file": "reliability.md",
+      "source": "kanon/laravel-kanon/references/reliability.md",
+      "paths": [
+        "{{PRODUCT_NAMESPACE}}/**"
+      ]
+    },
+    {
+      "file": "testing.md",
+      "source": "kanon/laravel-kanon/references/testing.md",
+      "paths": [
+        "**/Tests/**",
+        "tests/**",
+        "database/**"
+      ]
+    }
+  ]
+}
