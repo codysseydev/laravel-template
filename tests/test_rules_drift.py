@@ -46,7 +46,8 @@ class SyncRulesTest(unittest.TestCase):
         self.write(self.skills, "kanon/b.md", "# B\n\nBody B.\n")
         self.write(self.rules, "index.md", "# Index\n")
         for r in self.manifest:
-            body = open(os.path.join(self.skills, r["source"]), encoding="utf-8").read()
+            with open(os.path.join(self.skills, r["source"]), encoding="utf-8") as f:
+                body = f.read()
             self.write(self.rules, r["file"], sync_rules.render(r["paths"], body))
 
     def write(self, root, name, text):
@@ -85,9 +86,12 @@ class SyncRulesTest(unittest.TestCase):
 
     def test_check_writes_nothing(self):
         self.write(self.skills, "kanon/a.md", "# A\n\nNew body.\n")
-        before = open(os.path.join(self.rules, "a.md"), encoding="utf-8").read()
+        target = os.path.join(self.rules, "a.md")
+        with open(target, encoding="utf-8") as f:
+            before = f.read()
         self.check()
-        self.assertEqual(before, open(os.path.join(self.rules, "a.md"), encoding="utf-8").read())
+        with open(target, encoding="utf-8") as f:
+            self.assertEqual(before, f.read())
 
     def test_sync_repairs_drift_and_missing_copy(self):
         self.write(self.skills, "kanon/a.md", "# A\n\nNew body.\n")
